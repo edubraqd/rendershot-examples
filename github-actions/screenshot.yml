@@ -1,0 +1,22 @@
+# Capture a screenshot in CI using the official RenderShot Action.
+# Add your key as a repository secret named RENDERSHOT_API_KEY.
+name: Screenshot example
+on: [workflow_dispatch]
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: edubraqd/rendershot-action@v1
+        with:
+          api-key: ${{ secrets.RENDERSHOT_API_KEY }}
+          url: https://example.com
+          output: screenshot.webp
+          type: webp
+          full-page: true
+          block-cookie-banners: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: screenshot
+          path: screenshot.webp

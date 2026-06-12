@@ -1,0 +1,12 @@
+{
+  "name": "rendershot-examples-node",
+  "private": true,
+  "type": "module",
+  "description": "RenderShot API examples (Node.js, built-in fetch, no dependencies)",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "screenshot": "node screenshot.mjs",
+    "pdf-url": "node pdf-url.mjs",
+    "pdf-html": "node pdf-html.mjs"
+  }
+}
