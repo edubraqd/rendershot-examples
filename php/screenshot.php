@@ -1,11 +1,11 @@
 <?php
-// Capture a website screenshot (WebP).
+// Capture a website screenshot (WebP) via the RapidAPI gateway.
 // Usage: php screenshot.php [url] [output]
 
 $key = getenv('RENDERSHOT_API_KEY');
-$base = getenv('RENDERSHOT_API_URL') ?: 'https://api.rendershot.dev';
+$host = getenv('RENDERSHOT_RAPIDAPI_HOST') ?: 'screenshot-e-pdf-render.p.rapidapi.com';
 if (!$key) {
-    fwrite(STDERR, "Set RENDERSHOT_API_KEY (see .env.example)\n");
+    fwrite(STDERR, "Set RENDERSHOT_API_KEY to your RapidAPI key (see .env.example)\n");
     exit(1);
 }
 
@@ -19,10 +19,10 @@ $qs = http_build_query([
     'blockCookieBanners' => 'true',
 ]);
 
-$ch = curl_init("$base/v1/screenshot?$qs");
+$ch = curl_init("https://$host/v1/screenshot?$qs");
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_HTTPHEADER => ["x-api-key: $key"],
+    CURLOPT_HTTPHEADER => ["X-RapidAPI-Key: $key", "X-RapidAPI-Host: $host"],
 ]);
 $body = curl_exec($ch);
 $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);

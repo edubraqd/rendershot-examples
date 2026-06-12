@@ -1,26 +1,21 @@
-// Capture a website screenshot (WebP). Node 18+ (built-in fetch).
+// Capture a website screenshot (WebP) via the RapidAPI gateway. Node 18+.
 // Usage: node screenshot.mjs [url] [output]
 import { writeFile } from 'node:fs/promises';
 
 const KEY = process.env.RENDERSHOT_API_KEY;
-const BASE = process.env.RENDERSHOT_API_URL || 'https://api.rendershot.dev';
+const HOST = process.env.RENDERSHOT_RAPIDAPI_HOST || 'screenshot-e-pdf-render.p.rapidapi.com';
 if (!KEY) {
-  console.error('Set RENDERSHOT_API_KEY (see .env.example)');
+  console.error('Set RENDERSHOT_API_KEY to your RapidAPI key (see .env.example)');
   process.exit(1);
 }
 
 const url = process.argv[2] || 'https://example.com';
 const out = process.argv[3] || 'screenshot.webp';
 
-const qs = new URLSearchParams({
-  url,
-  type: 'webp',
-  fullPage: 'true',
-  blockCookieBanners: 'true',
-});
+const qs = new URLSearchParams({ url, type: 'webp', fullPage: 'true', blockCookieBanners: 'true' });
 
-const res = await fetch(`${BASE}/v1/screenshot?${qs}`, {
-  headers: { 'x-api-key': KEY },
+const res = await fetch(`https://${HOST}/v1/screenshot?${qs}`, {
+  headers: { 'X-RapidAPI-Key': KEY, 'X-RapidAPI-Host': HOST },
 });
 
 if (!res.ok) {

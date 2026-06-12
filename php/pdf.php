@@ -1,11 +1,11 @@
 <?php
-// Generate a PDF from raw HTML (with page numbers).
+// Generate a PDF from raw HTML (with page numbers) via the RapidAPI gateway.
 // Usage: php pdf.php [output]
 
 $key = getenv('RENDERSHOT_API_KEY');
-$base = getenv('RENDERSHOT_API_URL') ?: 'https://api.rendershot.dev';
+$host = getenv('RENDERSHOT_RAPIDAPI_HOST') ?: 'screenshot-e-pdf-render.p.rapidapi.com';
 if (!$key) {
-    fwrite(STDERR, "Set RENDERSHOT_API_KEY (see .env.example)\n");
+    fwrite(STDERR, "Set RENDERSHOT_API_KEY to your RapidAPI key (see .env.example)\n");
     exit(1);
 }
 
@@ -16,12 +16,16 @@ $payload = json_encode([
     'pageNumbers' => true,
 ]);
 
-$ch = curl_init("$base/v1/pdf");
+$ch = curl_init("https://$host/v1/pdf");
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POST => true,
     CURLOPT_POSTFIELDS => $payload,
-    CURLOPT_HTTPHEADER => ["x-api-key: $key", "content-type: application/json"],
+    CURLOPT_HTTPHEADER => [
+        "X-RapidAPI-Key: $key",
+        "X-RapidAPI-Host: $host",
+        "content-type: application/json",
+    ],
 ]);
 $body = curl_exec($ch);
 $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);

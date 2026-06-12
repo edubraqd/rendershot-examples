@@ -2,6 +2,8 @@
 
 Official, copy-paste examples for the [RenderShot](https://rendershot.dev) screenshot & PDF API — turn any URL or HTML into PNG / JPEG / WebP or PDF.
 
+RenderShot is served through **RapidAPI**, which handles authentication, billing and quota. You call the RapidAPI gateway with your RapidAPI key; these examples do exactly that.
+
 - **Website:** https://rendershot.dev
 - **API docs:** https://api.rendershot.dev/docs
 - **Get a free API key (RapidAPI):** https://rapidapi.com/eduardoalcantarasp/api/screenshot-e-pdf-render
@@ -11,11 +13,16 @@ Official, copy-paste examples for the [RenderShot](https://rendershot.dev) scree
 
 ```bash
 cp .env.example .env
-# edit .env and set RENDERSHOT_API_KEY
+# edit .env and set RENDERSHOT_API_KEY to your RapidAPI key
 export $(grep -v '^#' .env | xargs)   # load into your bash shell
 ```
 
-`RENDERSHOT_API_KEY` is required. `RENDERSHOT_API_URL` defaults to `https://api.rendershot.dev`.
+Every example sends two headers to the gateway:
+
+```
+X-RapidAPI-Key:  <your RapidAPI key>
+X-RapidAPI-Host: screenshot-e-pdf-render.p.rapidapi.com
+```
 
 ## Examples
 
@@ -31,17 +38,9 @@ export $(grep -v '^#' .env | xargs)   # load into your bash shell
 ### Run them
 
 ```bash
-# cURL
 bash curl/screenshot.sh https://example.com out.webp
-
-# Node (no dependencies, uses built-in fetch)
 node node/screenshot.mjs https://example.com out.webp
-
-# Python
-pip install -r python/requirements.txt
-python python/screenshot.py https://example.com out.webp
-
-# PHP
+pip install -r python/requirements.txt && python python/screenshot.py https://example.com out.webp
 php php/screenshot.php https://example.com out.webp
 ```
 

@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-# Generate a PDF from a URL.
+# Generate a PDF from a URL via the RapidAPI gateway.
 # Usage: bash curl/pdf-url.sh [url] [output]
 set -euo pipefail
-: "${RENDERSHOT_API_KEY:?Set RENDERSHOT_API_KEY (see .env.example)}"
-BASE="${RENDERSHOT_API_URL:-https://api.rendershot.dev}"
+: "${RENDERSHOT_API_KEY:?Set RENDERSHOT_API_KEY to your RapidAPI key (see .env.example)}"
+HOST="${RENDERSHOT_RAPIDAPI_HOST:-screenshot-e-pdf-render.p.rapidapi.com}"
 URL="${1:-https://example.com}"
 OUT="${2:-page.pdf}"
 
-code=$(curl -sS -X POST "$BASE/v1/pdf" \
-  -H "x-api-key: $RENDERSHOT_API_KEY" \
+code=$(curl -sS -X POST "https://$HOST/v1/pdf" \
+  -H "X-RapidAPI-Key: $RENDERSHOT_API_KEY" \
+  -H "X-RapidAPI-Host: $HOST" \
   -H "content-type: application/json" \
   -d "{\"url\":\"$URL\",\"format\":\"A4\"}" \
   -w '%{http_code}' --output "$OUT")

@@ -1,38 +1,33 @@
 {
   "info": {
-    "name": "RenderShot — Screenshot & PDF API",
-    "description": "Capture website screenshots (PNG/JPEG/WebP) and generate PDFs from URL or HTML. Set the `apiKey` collection variable, then send any request.\n\nGet a key: https://rapidapi.com/eduardoalcantarasp/api/screenshot-e-pdf-render\nDocs: https://api.rendershot.dev/docs",
+    "name": "RenderShot — Screenshot & PDF API (via RapidAPI)",
+    "description": "Capture website screenshots (PNG/JPEG/WebP) and generate PDFs from URL or HTML. RenderShot is served through RapidAPI: set the `apiKey` variable to your RapidAPI key, then send any request.\n\nGet a key: https://rapidapi.com/eduardoalcantarasp/api/screenshot-e-pdf-render\nDocs: https://api.rendershot.dev/docs",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "https://api.rendershot.dev", "type": "string" },
-    { "key": "apiKey", "value": "YOUR_KEY", "type": "string" }
+    { "key": "rapidApiHost", "value": "screenshot-e-pdf-render.p.rapidapi.com", "type": "string" },
+    { "key": "apiKey", "value": "YOUR_RAPIDAPI_KEY", "type": "string" }
   ],
-  "auth": {
-    "type": "apikey",
-    "apikey": [
-      { "key": "key", "value": "x-api-key", "type": "string" },
-      { "key": "value", "value": "{{apiKey}}", "type": "string" },
-      { "key": "in", "value": "header", "type": "string" }
-    ]
-  },
   "item": [
     {
-      "name": "Health",
+      "name": "Health (public)",
       "request": {
         "method": "GET",
-        "auth": { "type": "noauth" },
-        "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] }
+        "url": { "raw": "https://api.rendershot.dev/health", "protocol": "https", "host": ["api", "rendershot", "dev"], "path": ["health"] }
       }
     },
     {
       "name": "Screenshot (GET)",
       "request": {
         "method": "GET",
-        "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+        "header": [
+          { "key": "X-RapidAPI-Key", "value": "{{apiKey}}" },
+          { "key": "X-RapidAPI-Host", "value": "{{rapidApiHost}}" }
+        ],
         "url": {
-          "raw": "{{baseUrl}}/v1/screenshot?url=https://example.com&fullPage=true&type=png",
-          "host": ["{{baseUrl}}"],
+          "raw": "https://{{rapidApiHost}}/v1/screenshot?url=https://example.com&fullPage=true&type=png",
+          "protocol": "https",
+          "host": ["{{rapidApiHost}}"],
           "path": ["v1", "screenshot"],
           "query": [
             { "key": "url", "value": "https://example.com" },
@@ -40,10 +35,8 @@
             { "key": "type", "value": "png", "description": "png | jpeg | webp" },
             { "key": "device", "value": "iphone_15", "disabled": true },
             { "key": "darkMode", "value": "true", "disabled": true },
-            { "key": "blockAds", "value": "true", "disabled": true },
             { "key": "blockCookieBanners", "value": "true", "disabled": true },
-            { "key": "waitForSelector", "value": ".loaded", "disabled": true },
-            { "key": "response", "value": "json", "disabled": true }
+            { "key": "waitForSelector", "value": ".loaded", "disabled": true }
           ]
         }
       }
@@ -53,14 +46,12 @@
       "request": {
         "method": "POST",
         "header": [
-          { "key": "x-api-key", "value": "{{apiKey}}" },
+          { "key": "X-RapidAPI-Key", "value": "{{apiKey}}" },
+          { "key": "X-RapidAPI-Host", "value": "{{rapidApiHost}}" },
           { "key": "Content-Type", "value": "application/json" }
         ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"url\": \"https://stripe.com\",\n  \"type\": \"webp\",\n  \"fullPage\": true,\n  \"blockCookieBanners\": true\n}"
-        },
-        "url": { "raw": "{{baseUrl}}/v1/screenshot", "host": ["{{baseUrl}}"], "path": ["v1", "screenshot"] }
+        "body": { "mode": "raw", "raw": "{\n  \"url\": \"https://stripe.com\",\n  \"type\": \"webp\",\n  \"fullPage\": true,\n  \"blockCookieBanners\": true\n}" },
+        "url": { "raw": "https://{{rapidApiHost}}/v1/screenshot", "protocol": "https", "host": ["{{rapidApiHost}}"], "path": ["v1", "screenshot"] }
       }
     },
     {
@@ -68,22 +59,23 @@
       "request": {
         "method": "POST",
         "header": [
-          { "key": "x-api-key", "value": "{{apiKey}}" },
+          { "key": "X-RapidAPI-Key", "value": "{{apiKey}}" },
+          { "key": "X-RapidAPI-Host", "value": "{{rapidApiHost}}" },
           { "key": "Content-Type", "value": "application/json" }
         ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"html\": \"<h1>Invoice #42</h1><p>Total: $99.00</p>\",\n  \"format\": \"A4\",\n  \"pageNumbers\": true\n}"
-        },
-        "url": { "raw": "{{baseUrl}}/v1/pdf", "host": ["{{baseUrl}}"], "path": ["v1", "pdf"] }
+        "body": { "mode": "raw", "raw": "{\n  \"html\": \"<h1>Invoice #42</h1><p>Total: $99.00</p>\",\n  \"format\": \"A4\",\n  \"pageNumbers\": true\n}" },
+        "url": { "raw": "https://{{rapidApiHost}}/v1/pdf", "protocol": "https", "host": ["{{rapidApiHost}}"], "path": ["v1", "pdf"] }
       }
     },
     {
       "name": "Usage stats (GET)",
       "request": {
         "method": "GET",
-        "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
-        "url": { "raw": "{{baseUrl}}/v1/usage", "host": ["{{baseUrl}}"], "path": ["v1", "usage"] }
+        "header": [
+          { "key": "X-RapidAPI-Key", "value": "{{apiKey}}" },
+          { "key": "X-RapidAPI-Host", "value": "{{rapidApiHost}}" }
+        ],
+        "url": { "raw": "https://{{rapidApiHost}}/v1/usage", "protocol": "https", "host": ["{{rapidApiHost}}"], "path": ["v1", "usage"] }
       }
     }
   ]
